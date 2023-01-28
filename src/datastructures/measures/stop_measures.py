@@ -1,5 +1,5 @@
-from datastructures.measures.base_measure import BaseMeasure
-from datastructures.location import Location
+from src.datastructures.measures.base_measure import BaseMeasure
+from src.datastructures.location import Location
 
 
 class StopLocMeasure(BaseMeasure):

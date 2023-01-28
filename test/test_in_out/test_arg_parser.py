@@ -2,7 +2,7 @@ from contextlib import redirect_stderr
 from os import devnull
 from unittest import TestCase
 
-from in_out import arg_parser as ap
+from src.in_out import arg_parser as ap
 
 
 class TestArgParser(TestCase):
