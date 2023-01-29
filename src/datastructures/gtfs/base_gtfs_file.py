@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Type
+from typing import Type, TYPE_CHECKING
 
 import pandas as pd
 
-from datastructures.measures.base_measure import BaseMeasure
+if TYPE_CHECKING:
+    from datastructures.measures.base_measure import BaseMeasure
 
 
 class BaseGTFSObject(ABC):

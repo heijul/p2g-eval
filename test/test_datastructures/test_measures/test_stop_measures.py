@@ -1,15 +1,16 @@
 from unittest import TestCase
 
-from src.datastructures.location import Location
 from src.datastructures.measures.stop_measures import StopLocMeasure
 
 
 class TestStopLocMeasure(TestCase):
     def test_calculate(self) -> None:
+        from src.datastructures.gtfs.stop import Stop
+
         m = StopLocMeasure()
-        loc1 = Location(48.07773, 7.8889)
-        loc2 = Location(48.07772, 7.8889)
-        m.calculate(loc1, loc2)
+        stop1 = Stop("stop1", "stop1", "48.07773", "7.8889")
+        stop2 = Stop("stop2", "stop2", "48.07772", "7.8889")
+        m.calculate(stop1, stop2)
         self.assertEqual(0, m.value)
 
     def test_to_output(self) -> None:

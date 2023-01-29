@@ -16,4 +16,4 @@ class Stop(BaseGTFSObject):
         self.loc = Location(float(lat), float(lon))
 
     def calculate_measures(self, ground_truth: Stop) -> list[StopMeasure]:
-        return [StopLocMeasure().calculate(ground_truth.loc, self.loc)]
+        return [StopLocMeasure().calculate(ground_truth, self)]
