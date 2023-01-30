@@ -18,4 +18,3 @@ class TestLocation(TestCase):
         loc2.lat = 49
         loc2.lon = loc1.lon
         self.assertEqual(111200, loc1.distance(loc2))
-

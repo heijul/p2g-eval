@@ -18,4 +18,3 @@ class TestStopLocMeasure(TestCase):
         self.assertEqual("Stop location distance: -1.00", m.to_output())
         m.value = 1/3
         self.assertEqual("Stop location distance:  0.33", m.to_output())
-

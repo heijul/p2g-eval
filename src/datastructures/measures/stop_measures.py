@@ -8,6 +8,7 @@ from src.datastructures.measures.base_measure import BaseMeasure
 if TYPE_CHECKING:
     from src.datastructures.gtfs.stop import Stop
 
+
 class StopMeasure(BaseMeasure, ABC):
     """ Base class for all measures about stops. """
     pass
