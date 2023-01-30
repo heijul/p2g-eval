@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Type, TYPE_CHECKING
+from io import StringIO
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
+
 if TYPE_CHECKING:
-    from datastructures.measures.base_measure import BaseMeasure
+    from src.datastructures.measures.base_measure import BaseMeasure
 
 
 class BaseGTFSObject(ABC):
@@ -21,9 +23,14 @@ class BaseGTFSObject(ABC):
         """ Returns an object containing the defining values. """
         return cls(*list(series[cls.fields]))
 
-    @staticmethod
-    def from_df(cls, df: pd.DataFrame) -> list[Type[BaseGTFSObject]]:
+    @classmethod
+    def from_df(cls, df: pd.DataFrame) -> list[BaseGTFSObject]:
         return [cls(*v) for v in df[cls.fields].values]
+
+    @classmethod
+    def from_buffer(cls, buffer: StringIO) -> list[BaseGTFSObject]:
+        # noinspection PyTypeChecker
+        return cls.from_df(pd.read_csv(buffer))
 
     @abstractmethod
     def calculate_measures(
