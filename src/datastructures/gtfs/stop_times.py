@@ -6,7 +6,7 @@ from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
 from src.datastructures.p2g_time import Time
 
 
-@dataclass
+@dataclass(init=False)
 class StopTime(BaseGTFSObject):
     trip_id: str
     arrival_time: Time

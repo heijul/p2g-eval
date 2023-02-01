@@ -8,7 +8,7 @@ from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
 from src.datastructures.location import Location
 
 
-@dataclass
+@dataclass(init=False)
 class Stop(BaseGTFSObject):
     stop_id: str
     stop_name: str
