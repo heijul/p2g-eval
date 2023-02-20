@@ -23,5 +23,5 @@ class StopTime(BaseGTFSObject):
         self.stop_id = stop_id
         self.stop_sequence = stop_sequence
 
-    def calculate_measures(self, ground_truth: StopTimes) -> list[StopTimes]:
+    def calculate_measures(self, ground_truth: StopTime) -> list[StopTime]:
         ...
