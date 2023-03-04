@@ -1,0 +1,3 @@
+[submodule "pdf2gtfs"]
+	path = pdf2gtfs
+	url = https://github.com/heijul/pdf2gtfs
