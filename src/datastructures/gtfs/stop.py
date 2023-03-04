@@ -12,13 +12,16 @@ from src.datastructures.p2g_types import Location
 class Stop(BaseGTFSObject):
     stop_id: str
     stop_name: str
-    loc: Location
+    stop_lat: float
+    stop_lon: float
 
     def __init__(self, stop_id: str, stop_name: str,
                  lat: float, lon: float) -> None:
         super().__init__()
         self.id = stop_id
         self.stop_name = stop_name
+        self.lat = lat
+        self.lon = lon
         self.loc = Location(float(lat), float(lon))
 
     def calculate_measures(self, ground_truth: Stop) -> list[StopMeasure]:

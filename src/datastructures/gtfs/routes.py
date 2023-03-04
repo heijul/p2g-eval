@@ -10,8 +10,8 @@ from src.datastructures.p2g_types import RouteType
 @dataclass
 class Route(BaseGTFSObject):
     route_id: str
-    short_name: str
-    long_name: str
+    route_short_name: str
+    route_long_name: str
     route_type: RouteType
 
     def calculate_measures(self, ground_truth: Route) -> list[BaseMeasure]:

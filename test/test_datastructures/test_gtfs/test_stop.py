@@ -18,7 +18,7 @@ class TestStop(TestCase):
         df = pd.read_csv(self.truth_path)
         stop = Stop.from_series(df.iloc[0])
         self.assertEqual("de:08311:30300:0:1", stop.id)
-        self.assertEqual("Freiburg, Laßbergstraße", stop.name)
+        self.assertEqual("Freiburg, Laßbergstraße", stop.stop_name)
         self.assertEqual(47.9844905384561, stop.loc.lat)
         self.assertEqual(7.89366708256103, stop.loc.lon)
 

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.datastructures.location import Location
+from src.datastructures.p2g_types import Location
 
 
 class TestLocation(TestCase):
