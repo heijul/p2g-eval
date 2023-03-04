@@ -7,3 +7,5 @@
 
 data/
 
+# Ignore the pycrunch config
+.pycrunch-config.yaml
