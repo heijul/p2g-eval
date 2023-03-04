@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
-from src.datastructures.p2g_time import Time
+from src.datastructures.p2g_types import Time
 
 
 @dataclass(init=False)
@@ -24,4 +24,4 @@ class StopTime(BaseGTFSObject):
         self.stop_sequence = stop_sequence
 
     def calculate_measures(self, ground_truth: StopTime) -> list[StopTime]:
-        ...
+        raise NotImplementedError("Not implemented yet.")

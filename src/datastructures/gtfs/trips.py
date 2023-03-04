@@ -13,4 +13,4 @@ class Trip(BaseGTFSObject):
     trip_id: str
 
     def calculate_measures(self, ground_truth: Trip) -> list[BaseMeasure]:
-        ...
+        raise NotImplementedError("Not implemented yet.")

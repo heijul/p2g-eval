@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from src.datastructures.date import Date
 from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from src.datastructures.p2g_types import Date, GTFSExceptionType
+
+if TYPE_CHECKING:
+    from src.datastructures.gtfs.calendar import Calendar
 
 
 @dataclass(init=False)
@@ -12,14 +16,16 @@ class CalendarDate(BaseGTFSObject):
     date: Date
     exception_type: int
 
-    def __init__(self, service_id: str, date: Date, exception_type: int
-                 ) -> None:
+    def __init__(self, service_id: str, date: Date,
+                 exception_type: GTFSExceptionType) -> None:
         super().__init__()
         self.service_id = service_id
         self.date = date
-        # TODO: Check if exception_type in [1, 2]
         self.exception_type = exception_type
+
+    def to_calendar(self) -> Calendar:
+        raise NotImplementedError("Not implemented yet.")
 
     def calculate_measures(
             self, ground_truth: CalendarDate) -> list[CalendarDate]:
-        ...
+        raise NotImplementedError("Not implemented yet.")

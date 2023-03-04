@@ -1,20 +1,31 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from src.datastructures.p2g_types import Date
+
+
+if TYPE_CHECKING:
+    from src.datastructures.gtfs.calendar_dates import CalendarDate
 
 
 @dataclass
 class Calendar(BaseGTFSObject):
     service_id: str
-    mon: bool
-    tue: bool
-    wed: bool
-    thu: bool
-    fri: bool
-    sat: bool
-    sun: bool
+    monday: bool
+    tuesday: bool
+    wednesday: bool
+    thursday: bool
+    friday: bool
+    saturday: bool
+    sunday: bool
+    start_date: Date
+    end_date: Date
+
+    def to_dates(self) -> CalendarDate:
+        raise NotImplementedError("Not implemented yet.")
 
     def calculate_measures(self, ground_truth: Calendar) -> list[Calendar]:
-        pass
+        raise NotImplementedError("Not implemented yet.")
