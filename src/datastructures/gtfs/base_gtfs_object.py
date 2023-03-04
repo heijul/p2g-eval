@@ -6,6 +6,7 @@ from io import StringIO
 from typing import TYPE_CHECKING
 
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 
 if TYPE_CHECKING:
@@ -33,8 +34,11 @@ class BaseGTFSObject(ABC):
 
     @classmethod
     def from_buffer(cls, buffer: StringIO) -> list[BaseGTFSObject]:
-        # noinspection PyTypeChecker
-        return cls.from_df(pd.read_csv(buffer))
+        try:
+            # noinspection PyTypeChecker
+            return cls.from_df(pd.read_csv(buffer))
+        except EmptyDataError:
+            return []
 
     @abstractmethod
     def calculate_measures(

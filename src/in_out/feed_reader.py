@@ -16,9 +16,12 @@ class BaseFeedReader:
             with ZipFile(self.feed_path).open(name, "r") as file:
 
                 return StringIO(file.read().decode("utf-8"))
-        except OSError as e:
+        except (PermissionError, OSError) as e:
+            raise e
+        except KeyError as e:
             if noexist_ok:
                 return StringIO()
+            # TODO: Better error message
             raise e
 
     def read(self) -> Feed:

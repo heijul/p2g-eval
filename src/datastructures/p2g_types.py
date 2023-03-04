@@ -24,7 +24,7 @@ class Time:
         """ Creates a Time object from the given string. """
         # No need to use datetime here, because the format is so simple.
         hours, minutes, seconds = time_str.strip().split(":")
-        return Time(hours, minutes, seconds)
+        return Time(int(hours), int(minutes), int(seconds))
 
 
 class Date:

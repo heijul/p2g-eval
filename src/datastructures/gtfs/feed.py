@@ -18,7 +18,5 @@ class Feed:
         self.routes = Route.from_buffer(data["routes"])
         self.trips = Trip.from_buffer(data["trips"])
         self.stop_times = StopTime.from_buffer(data["stop_times"])
-        buf = data.get("calendar")
-        self.calendar = Calendar.from_buffer(buf) if buf else None
-        buf = data.get("calendar_dates")
-        self.calendar_dates = CalendarDate.from_buffer(buf) if buf else None
+        self.calendar = Calendar.from_buffer(data["calendar"])
+        self.calendar_dates = CalendarDate.from_buffer(data["calendar_dates"])

@@ -8,8 +8,8 @@ class TestStopLocMeasure(TestCase):
         from src.datastructures.gtfs.stop import Stop
 
         m = StopLocMeasure()
-        stop1 = Stop("stop1", "stop1", "48.07773", "7.8889")
-        stop2 = Stop("stop2", "stop2", "48.07772", "7.8889")
+        stop1 = Stop("stop1", "stop1", 48.07773, 7.8889)
+        stop2 = Stop("stop2", "stop2", 48.07772, 7.8889)
         m.calculate(stop1, stop2)
         self.assertEqual(0, m.value)
 
