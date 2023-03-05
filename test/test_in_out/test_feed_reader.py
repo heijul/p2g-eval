@@ -1,7 +1,7 @@
 from pathlib import Path
 from unittest import TestCase
 
-from src.in_out.feed_reader import BaseFeedReader
+from p2g_eval.in_out.feed_reader import BaseFeedReader
 from test import TEST_DIR
 
 

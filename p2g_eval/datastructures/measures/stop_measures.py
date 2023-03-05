@@ -3,10 +3,10 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING
 
-from src.datastructures.measures.base_measure import BaseMeasure
+from p2g_eval.datastructures.measures.base_measure import BaseMeasure
 
 if TYPE_CHECKING:
-    from src.datastructures.gtfs.stop import Stop
+    from p2g_eval.datastructures.gtfs.stop import Stop
 
 
 class StopMeasure(BaseMeasure, ABC):

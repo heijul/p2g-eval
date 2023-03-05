@@ -2,7 +2,7 @@ from io import StringIO
 from pathlib import Path
 from zipfile import ZipFile
 
-from src.datastructures.gtfs.feed import Feed
+from p2g_eval.datastructures.gtfs.feed import Feed
 
 
 class BaseFeedReader:

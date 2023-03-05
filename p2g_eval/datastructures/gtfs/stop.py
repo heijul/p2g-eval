@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from src.datastructures.measures.stop_measures import (
+from p2g_eval.datastructures.measures.stop_measures import (
     StopLocMeasure, StopMeasure)
-from src.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
-from src.datastructures.p2g_types import Location
+from p2g_eval.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from p2g_eval.datastructures.p2g_types import Location
 
 
 @dataclass(init=False)

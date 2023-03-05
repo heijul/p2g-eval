@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.datastructures.p2g_types import Date, Location, Time
+from p2g_eval.datastructures.p2g_types import Date, Location, Time
 
 
 class TestTime(TestCase):

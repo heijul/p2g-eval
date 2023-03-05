@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-from src.datastructures.measures.stop_measures import StopLocMeasure
+from p2g_eval.datastructures.measures.stop_measures import StopLocMeasure
 
 
 class TestStopLocMeasure(TestCase):
     def test_calculate(self) -> None:
-        from src.datastructures.gtfs.stop import Stop
+        from p2g_eval.datastructures.gtfs.stop import Stop
 
         m = StopLocMeasure()
         stop1 = Stop("stop1", "stop1", 48.07773, 7.8889)
