@@ -1,0 +1,11 @@
+[run]
+branch = True
+source = p2g_eval
+
+[report]
+skip_empty = True
+skip_covered = True
+show_missing = True
+exclude_lines =
+    #\s*(pragma|PRAGMA)[:\s]?\s*(no|NO)\s*(cover|COVER)
+    if TYPE_CHECKING:
