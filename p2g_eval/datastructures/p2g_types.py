@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from enum import IntEnum
 from datetime import datetime as dt
+from enum import IntEnum
 
 from geopy.distance import distance
 

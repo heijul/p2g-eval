@@ -1,8 +1,8 @@
 from unittest import TestCase
+
 import pandas as pd
 
 from p2g_eval.datastructures.gtfs.stop import Stop
-
 from test import TEST_DIR
 
 
