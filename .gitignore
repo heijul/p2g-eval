@@ -11,3 +11,8 @@ data/
 .pycrunch-config.yaml
 
 .coverage
+
+# Build directories
+**/*.egg-info
+**/build
+**/dist
