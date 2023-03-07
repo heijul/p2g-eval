@@ -16,7 +16,7 @@ class P2GConfig(BaseConfig):
         return self.config_dir.joinpath("default_config.yaml")
 
     def _initialize_config_properties(self) -> None:
-        self.test_feed = FeedProperty("test_feed")
+        self.ground_truth = FeedProperty("ground_truth")
         self.eval_feed = FeedProperty("eval_feed")
         super()._initialize_config_properties()
 

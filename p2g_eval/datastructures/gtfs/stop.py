@@ -18,10 +18,10 @@ class Stop(BaseGTFSObject):
     def __init__(self, stop_id: str, stop_name: str,
                  lat: float, lon: float) -> None:
         super().__init__()
-        self.id = stop_id
+        self.stop_id = stop_id
         self.stop_name = stop_name
-        self.lat = lat
-        self.lon = lon
+        self.stop_lat = lat
+        self.stop_lon = lon
         self.loc = Location(float(lat), float(lon))
 
     def calculate_measures(self, ground_truth: Stop) -> list[StopMeasure]:

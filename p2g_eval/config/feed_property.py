@@ -11,6 +11,11 @@ class FeedProperty(Property):
         super().__init__(name, Feed)
 
     def __set__(self, instance, value: Feed | Path) -> None:
-        if isinstance(value, Path):
+        # TODO: This should probably be done explicitly
+        # Allow paths as well.
+        if isinstance(value, str):
+            value = Path(value)
+        if isinstance(value, Path) and value.exists():
             value = BaseFeedReader(value).read()
+
         super().__set__(instance, value)
