@@ -1,7 +1,7 @@
 import sys
 
-from config.config import C
-from in_out.arg_parser import parse_args
+from p2g_eval.config.config import C
+from p2g_eval.in_out.arg_parser import parse_args
 
 
 def main() -> None:

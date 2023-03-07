@@ -1,11 +1,11 @@
 from io import StringIO
 
-from datastructures.gtfs.calendar import Calendar
-from datastructures.gtfs.calendar_dates import CalendarDate
-from datastructures.gtfs.routes import Route
-from datastructures.gtfs.stop import Stop
-from datastructures.gtfs.stop_times import StopTime
-from datastructures.gtfs.trips import Trip
+from p2g_eval.datastructures.gtfs.calendar import Calendar
+from p2g_eval.datastructures.gtfs.calendar_dates import CalendarDate
+from p2g_eval.datastructures.gtfs.routes import Route
+from p2g_eval.datastructures.gtfs.stop import Stop
+from p2g_eval.datastructures.gtfs.stop_times import StopTime
+from p2g_eval.datastructures.gtfs.trips import Trip
 
 
 class Feed:

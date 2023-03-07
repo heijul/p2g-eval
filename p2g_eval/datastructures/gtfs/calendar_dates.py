@@ -3,12 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from datastructures.gtfs.base_gtfs_object import BaseGTFSObject
-from datastructures.p2g_types import Date, GTFSExceptionType
+from p2g_eval.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from p2g_eval.datastructures.p2g_types import Date, GTFSExceptionType
 
 
 if TYPE_CHECKING:
-    from datastructures.gtfs.calendar import Calendar
+    from p2g_eval.datastructures.gtfs.calendar import Calendar
 
 
 @dataclass(init=False)

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from datastructures.gtfs.base_gtfs_object import BaseGTFSObject
-from datastructures.p2g_types import Time
+from p2g_eval.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from p2g_eval.datastructures.p2g_types import Time
 
 
 @dataclass(init=False)
