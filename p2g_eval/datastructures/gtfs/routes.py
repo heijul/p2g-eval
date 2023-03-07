@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from p2g_eval.datastructures.gtfs.base_gtfs_object import BaseGTFSObject
-from p2g_eval.datastructures.measures.base_measure import BaseMeasure
-from p2g_eval.datastructures.p2g_types import RouteType
+from datastructures.gtfs.base_gtfs_object import BaseGTFSObject
+from datastructures.measures.base_measure import BaseMeasure
+from datastructures.p2g_types import RouteType
 
 
 @dataclass

@@ -1,8 +1,9 @@
 from pathlib import Path
 
 from custom_conf.properties.property import Property
-from p2g_eval.datastructures.gtfs.feed import Feed
-from p2g_eval.in_out.feed_reader import BaseFeedReader
+
+from datastructures.gtfs.feed import Feed
+from in_out.feed_reader import BaseFeedReader
 
 
 class FeedProperty(Property):

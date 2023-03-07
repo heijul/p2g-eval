@@ -2,7 +2,8 @@ from pathlib import Path
 from typing import Any
 
 from custom_conf.config import BaseConfig
-from p2g_eval.config.feed_property import FeedProperty
+
+from config.feed_property import FeedProperty
 
 
 class P2GConfig(BaseConfig):

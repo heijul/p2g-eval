@@ -10,7 +10,7 @@ from pandas.errors import EmptyDataError
 
 
 if TYPE_CHECKING:
-    from p2g_eval.datastructures.measures.base_measure import BaseMeasure
+    from datastructures.measures.base_measure import BaseMeasure
 
 
 @dataclass(init=False)
