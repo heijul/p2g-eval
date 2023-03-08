@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import functools
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, fields
 from io import StringIO
-from typing import TYPE_CHECKING
+from typing import ClassVar, Iterator, Type, TYPE_CHECKING
 
 import pandas as pd
 from pandas.errors import EmptyDataError
@@ -13,32 +14,51 @@ if TYPE_CHECKING:
     from p2g_eval.datastructures.measures.base_measure import BaseMeasure
 
 
+class GTFSObjectList:
+    def __init__(self, objects: list[BaseGTFSObject]) -> None:
+        self.objects: list[BaseGTFSObject] = objects
+
+    @functools.cached_property
+    def id_map(self) -> dict[str: BaseGTFSObject]:
+        return {obj.id: obj for obj in self.objects}
+
+    def __iter__(self) -> Iterator:
+        yield from self.objects
+
+
 @dataclass(init=False)
 class BaseGTFSObject(ABC):
+    list_type: ClassVar[Type[GTFSObjectList]] = GTFSObjectList
+
     def __init__(self, *_) -> None:
+        """ Base class for objects from files contained in a GTFS feed. """
+        pass
+
+    @property
+    @abstractmethod
+    def id(self) -> str:
         pass
 
     @classmethod
     def field_names(cls) -> list[str]:
         return [field.name for field in fields(cls)]
 
-    """ Base class for objects of files contained in a GTFS feed. """
     @classmethod
     def from_series(cls, series: pd.Series) -> BaseGTFSObject:
         """ Returns an object containing the defining values. """
         return cls(*list(series[cls.field_names()]))
 
     @classmethod
-    def from_df(cls, df: pd.DataFrame) -> list[BaseGTFSObject]:
-        return [cls(*v) for v in df[cls.field_names()].values]
+    def from_df(cls, df: pd.DataFrame) -> GTFSObjectList:
+        return cls.list_type([cls(*v) for v in df[cls.field_names()].values])
 
     @classmethod
-    def from_buffer(cls, buffer: StringIO) -> list[BaseGTFSObject]:
+    def from_buffer(cls, buffer: StringIO) -> GTFSObjectList:
         try:
             # noinspection PyTypeChecker
-            return cls.from_df(pd.read_csv(buffer))
+            return cls.from_df(pd.read_csv(buffer, dtype=str))
         except EmptyDataError:
-            return []
+            return GTFSObjectList([])
 
     @abstractmethod
     def calculate_measures(
