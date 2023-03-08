@@ -4,7 +4,7 @@ import functools
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, fields
 from io import StringIO
-from typing import ClassVar, Iterator, Type, TYPE_CHECKING
+from typing import Any, ClassVar, Iterator, Type, TYPE_CHECKING
 
 import pandas as pd
 from pandas.errors import EmptyDataError
@@ -27,6 +27,16 @@ class GTFSObjectList:
 
     def __len__(self) -> int:
         return self.objects.__len__()
+
+    def __eq__(self, other: Any) -> bool:
+        if type(self) is not type(other):
+            return False
+        if len(self) != len(other):
+            return False
+        for left, right in zip(self, other):
+            if left != right:
+                return False
+        return True
 
 
 @dataclass(init=False)
@@ -68,3 +78,11 @@ class BaseGTFSObject(ABC):
             self, ground_truth: BaseGTFSObject) -> list[BaseMeasure]:
         """ Calculates all measures of the given GTFSObject. """
         pass
+
+    def __eq__(self, other: Any) -> bool:
+        if type(self) is not type(other):
+            return False
+        for field in self.field_names():
+            if getattr(self, field) != getattr(other, field):
+                return False
+        return True

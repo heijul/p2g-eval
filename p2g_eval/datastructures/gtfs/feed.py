@@ -1,4 +1,5 @@
 from io import StringIO
+from typing import Any
 
 from p2g_eval.datastructures.gtfs.calendar import Calendar
 from p2g_eval.datastructures.gtfs.calendar_dates import CalendarDate
@@ -20,3 +21,15 @@ class Feed:
         self.stop_times = StopTime.from_buffer(data["stop_times"])
         self.calendar = Calendar.from_buffer(data["calendar"])
         self.calendar_dates = CalendarDate.from_buffer(data["calendar_dates"])
+
+    def __eq__(self, other: Any) -> bool:
+        """ Two feeds are equal if all their objects are equal. """
+        if not isinstance(other, Feed):
+            return False
+        # TODO: Make this a property/instancevar.
+        fields = ["stops", "routes", "trips",
+                  "stop_times", "calendar", "calendar_dates"]
+        for field in fields:
+            if getattr(self, field) != getattr(other, field):
+                return False
+        return True

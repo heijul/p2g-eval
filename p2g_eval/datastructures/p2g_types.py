@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime as dt
 from enum import IntEnum
+from typing import Any
 
 from geopy.distance import distance
 
@@ -25,6 +26,12 @@ class Time:
         hours, minutes, seconds = time_str.strip().split(":")
         return Time(int(hours), int(minutes), int(seconds))
 
+    def __eq__(self, other: Any) -> bool:
+        return (isinstance(other, Time) and
+                self.hours == other.hours and
+                self.minutes == other.minutes and
+                self.seconds == other.seconds)
+
 
 class Date:
     """ Date type used by GTFS files. """
@@ -37,6 +44,12 @@ class Date:
     def from_str(date_str: str) -> Date:
         date = dt.strptime(date_str, "%Y%m%d")
         return Date(date.year, date.month, date.day)
+
+    def __eq__(self, other: Any) -> bool:
+        return (isinstance(other, Date) and
+                self.year == other.year and
+                self.month == other.month and
+                self.day == other.day)
 
 
 class Location:
@@ -52,6 +65,11 @@ class Location:
     def distance(self, other: Location) -> int:
         """ The direct distance to the other location in meters. """
         return int(distance(self.as_tuple(), other.as_tuple()).m)
+
+    def __eq__(self, other: Any) -> bool:
+        return (isinstance(other, Location) and
+                self.lat == other.lat and
+                self.lon == other.lon)
 
 
 class RouteType(IntEnum):
