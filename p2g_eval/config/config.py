@@ -9,7 +9,7 @@ from p2g_eval.config.properties import FeedProperty, MappingProperty
 class P2GConfig(BaseConfig):
     @property
     def src_dir(self) -> Path:
-        return Path(__file__).parents[1]
+        return Path(__file__).parents[1].resolve()
 
     @property
     def config_dir(self) -> Path:
