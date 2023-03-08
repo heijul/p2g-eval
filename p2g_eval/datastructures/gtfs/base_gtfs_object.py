@@ -25,6 +25,9 @@ class GTFSObjectList:
     def __iter__(self) -> Iterator:
         yield from self.objects
 
+    def __len__(self) -> int:
+        return self.objects.__len__()
+
 
 @dataclass(init=False)
 class BaseGTFSObject(ABC):

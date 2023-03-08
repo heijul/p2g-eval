@@ -12,10 +12,11 @@ class TestArgParser(TestCase):
               redirect_stderr(fnull)):
             ap.parse_args([])
 
-        truth = {"test_feed": "test.zip", "eval_feed": "eval.zip"}
-        args = ["test.zip", "eval.zip"]
+        truth = {"ground_truth": "test.zip", "eval_feed": "eval.zip"}
+        # First arg is the commandline command and can be ignored.
+        args = ["", "test.zip", "eval.zip"]
         self.assertDictEqual(truth, ap.parse_args(args))
         # No checks about filetype.
-        args[0] = "test.txt"
-        truth["test_feed"] = "test.txt"
+        args[1] = "test.txt"
+        truth["ground_truth"] = "test.txt"
         self.assertDictEqual(truth, ap.parse_args(args))
