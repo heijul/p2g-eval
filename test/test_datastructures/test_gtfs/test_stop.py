@@ -30,7 +30,7 @@ class TestStop(TestCase):
         stop = Stop.from_series(df2.iloc[stop_num])
         measures = stop.calculate_measures(ground_truth)
         self.assertEqual(1, len(measures))
-        self.assertEqual(33, measures[0].value)
+        self.assertEqual(2, measures[0].value)
 
         stop_num = 3
         ground_truth = Stop.from_series(df1.iloc[stop_num])

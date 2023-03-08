@@ -15,6 +15,8 @@ class TestStopLocMeasure(TestCase):
 
     def test_to_output(self) -> None:
         m = StopLocMeasure()
-        self.assertEqual("Stop location distance: -1.00", m.to_output())
+        self.assertEqual("Stop location distance in meter: -1.00",
+                         m.to_output())
         m.value = 1/3
-        self.assertEqual("Stop location distance:  0.33", m.to_output())
+        self.assertEqual("Stop location distance in meter:  0.33",
+                         m.to_output())

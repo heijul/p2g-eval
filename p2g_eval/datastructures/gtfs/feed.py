@@ -22,14 +22,17 @@ class Feed:
         self.calendar = Calendar.from_buffer(data["calendar"])
         self.calendar_dates = CalendarDate.from_buffer(data["calendar_dates"])
 
+    @property
+    def field_names(self) -> list[str]:
+        return ["stops", "routes", "trips",
+                "stop_times", "calendar", "calendar_dates"]
+
     def __eq__(self, other: Any) -> bool:
         """ Two feeds are equal if all their objects are equal. """
         if not isinstance(other, Feed):
             return False
-        # TODO: Make this a property/instancevar.
-        fields = ["stops", "routes", "trips",
-                  "stop_times", "calendar", "calendar_dates"]
-        for field in fields:
+
+        for field in self.field_names:
             if getattr(self, field) != getattr(other, field):
                 return False
         return True

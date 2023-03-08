@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from abc import ABC
 from typing import TYPE_CHECKING
 
@@ -19,7 +20,7 @@ class StopLocMeasure(StopMeasure):
     """ Uses the distance to calculate the quality of a stops' location. """
     @property
     def name(self) -> str:
-        return "Stop location distance"
+        return "Stop location distance in meter:"
 
     def calculate(self, stop1: Stop, stop2: Stop) -> StopLocMeasure:
         """ Calculate the value. If the distance is below 10 meters,
@@ -27,19 +28,6 @@ class StopLocMeasure(StopMeasure):
         self.value = stop1.loc.distance(stop2.loc)
         if self.value <= 10:
             self.value = 0
+        if self.value > 0:
+            self.value = round(math.log10(self.value))
         return self
-
-
-class StopMeasures:
-    """ A container for multiple stop measures, all using one ground truth. """
-    def __init__(self, ground_truth: Stop) -> None:
-        self.ground_truth = ground_truth
-        self.measures = [StopLocMeasure]
-
-    def calculate(self, stop: Stop) -> list[StopMeasure]:
-        results = []
-        for measure_cls in self.measures:
-            measure = measure_cls()
-            measure.calculate(self.ground_truth, stop)
-            results.append(measure)
-        return results

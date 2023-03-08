@@ -9,41 +9,41 @@ from p2g_eval.datastructures.gtfs.feed import Feed
 
 
 class BaseEntityMapper:
-    def __init__(self, ground_truth: Feed, feed: Feed) -> None:
-        self.ground_truth = ground_truth
-        self.feed = feed
+    def __init__(self, true_feed: Feed, test_feed: Feed) -> None:
+        self.true_feed = true_feed
+        self.test_feed = test_feed
 
     def map(self) -> EntityMapping:
         pass
 
 
 class StopEntityMapper(BaseEntityMapper):
-    def __init__(self, ground_truth: Feed, feed: Feed) -> None:
-        super().__init__(ground_truth, feed)
+    def __init__(self, true_feed: Feed, test_feed: Feed) -> None:
+        super().__init__(true_feed, test_feed)
 
     def map_naive(self) -> EntityMapping:
-        """ Map each stop of the ground truths stops (len n) to the first stop
-        of the second feeds stops (len k), that has the same name.
+        """ Map each stop of the true stops (len n) to the first stop
+        of the test feeds' stops (len k), that has the same name.
         Naive algorithm, taking O(n*k). However, k is generally small (~ 20),
         so this _might_ be ok for now.
         """
         mapping = EntityMapping()
-        for feed_stop in self.feed.stops:
-            for gt_stop in self.ground_truth.stops:
-                search = re.search(feed_stop.normalized_name,
-                                   gt_stop.normalized_name)
+        for test_stop in self.test_feed.stops:
+            for true_stop in self.true_feed.stops:
+                search = re.search(test_stop.normalized_name,
+                                   true_stop.normalized_name)
                 if search:
-                    mapping.add_next(gt_stop, feed_stop)
+                    mapping.add_next(true_stop, test_stop)
                     break
         return mapping
 
     def map_manual(self) -> EntityMapping:
         """ Basic mapping, where each mapping has been manually defined. """
         mapping = EntityMapping()
-        for gt_stop_id, feed_stop_id in C.stop_mapping:
-            gt_stop = self.ground_truth.stops.id_map[gt_stop_id]
-            feed_stop = self.feed.stops.id_map[feed_stop_id]
-            mapping.add_next(gt_stop, feed_stop)
+        for true_stop_id, test_stop_id in C.stop_mapping:
+            true_stop = self.true_feed.stops.id_map[true_stop_id]
+            test_stop = self.test_feed.stops.id_map[test_stop_id]
+            mapping.add_next(true_stop, test_stop)
         return mapping
 
     def map(self) -> EntityMapping:

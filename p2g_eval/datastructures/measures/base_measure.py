@@ -25,4 +25,4 @@ class BaseMeasure(ABC):
 
     def to_output(self) -> str:
         """ Turns the value of the measure into a string. """
-        return f"{self.name}: {self.value:{self.value_fmt}}"
+        return f"{self.name} {self.value:{self.value_fmt}}"

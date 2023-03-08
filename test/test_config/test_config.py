@@ -34,19 +34,20 @@ class TestP2GConfig(TestCase):
         self.assertTrue(c.default_config_path.exists())
 
     def test_load_args_dict(self) -> None:
-        ground_truth = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
-        eval_feed_path = TEST_DATA_DIR.joinpath("p2g_vag_1.zip")
+        true_feed = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
+        test_feed_path = TEST_DATA_DIR.joinpath("p2g_vag_1.zip")
         stop_mapping = TEST_DATA_DIR.joinpath("stop_mapping.csv")
-        values = {"eval_feed": eval_feed_path,
-                  "ground_truth": ground_truth,
+        values = {"test_feed": test_feed_path,
+                  "true_feed": true_feed,
                   "stop_mapping": stop_mapping}
         c = P2GConfig()
         c.load_args_dict(values)
-        self.assertEqual(id(ground_truth), id(c.ground_truth))
-        eval_feed = BaseFeedReader(eval_feed_path).read()
-        self.assertTrue(eval_feed == c.eval_feed)
-        self.assertNotEqual(id(eval_feed), id(c.eval_feed))
+        self.assertEqual(id(true_feed), id(c.true_feed))
+        test_feed = BaseFeedReader(test_feed_path).read()
+        self.assertTrue(test_feed == c.test_feed)
+        self.assertNotEqual(id(test_feed), id(c.test_feed))
         with open(stop_mapping) as fil:
             contents = fil.read()
-        mapping = [tuple(line.split(",")) for line in contents.split("\n")[1:]]
-        self.assertEqual(mapping, mapping)
+        mapping = [tuple(line.split(",")) for line in contents.split("\n")[1:]
+                   if line.strip() != ""]
+        self.assertEqual(mapping, c.stop_mapping)
