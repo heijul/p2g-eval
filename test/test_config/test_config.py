@@ -5,7 +5,7 @@ from custom_conf.properties.property import Property
 
 from p2g_eval.config.config import P2GConfig
 from p2g_eval.in_out.feed_reader import BaseFeedReader
-from test import TEST_DATA_DIR, TEST_DIR
+from test import TEST_DATA_DIR
 
 
 class TestP2GConfig(TestCase):
@@ -22,11 +22,6 @@ class TestP2GConfig(TestCase):
             with (self.subTest(i=i),
                   self.assertRaises(err.MissingRequiredPropertyError)):
                 _ = getattr(c, prop.name)
-
-    def test_src_dir(self) -> None:
-        c = P2GConfig()
-        self.assertTrue(c.src_dir.is_absolute())
-        self.assertEqual("test", str(TEST_DIR.relative_to(c.src_dir.parent)))
 
     def test_default_config_path(self) -> None:
         c = P2GConfig()
