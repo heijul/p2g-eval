@@ -6,9 +6,6 @@ import pandas as pd
 SPECIAL_CHARS = "\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF"
 
 
-# TODO: This currently uses a truncated copy of the pdf2gtfs normalize_series.
-#  Should instead import the normalize_string from p2g or implement it
-#  in a simpler way.
 def normalize_series(raw_series: pd.Series) -> pd.Series:
     """ Normalize the series and remove symbols. """
 

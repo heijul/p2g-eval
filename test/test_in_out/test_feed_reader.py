@@ -17,7 +17,6 @@ class TestFeedReader(TestCase):
             feed_reader.read()
 
     def test_read_non_existant_path(self) -> None:
-        # TODO: Should this fail upon creation instead of reading?
         feed_reader = BaseFeedReader(Path("/THISPATHDOESNOTEXIST"))
         with self.assertRaises(OSError):
             feed_reader.read()

@@ -14,7 +14,6 @@ class FeedProperty(Property):
         super().__init__(name, Feed)
 
     def __set__(self, instance, value: Feed | Path) -> None:
-        # TODO: This should probably be done explicitly
         # Allow paths as well.
         if isinstance(value, str):
             value = Path(value)

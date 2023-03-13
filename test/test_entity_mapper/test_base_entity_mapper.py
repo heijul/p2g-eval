@@ -19,7 +19,6 @@ class TestStopEntityMapper(TestCase):
 
     def test_map_naive(self) -> None:
         mapping = self.mapper.map_naive()
-        # TODO: FIX THIS TEST.
         self.assertTrue(22, len(mapping))
 
     def test_map_manual(self) -> None:

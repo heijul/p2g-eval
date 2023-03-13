@@ -21,7 +21,6 @@ class BaseFeedReader:
         except KeyError as e:
             if noexist_ok:
                 return StringIO()
-            # TODO: Better error message
             raise e
 
     def read(self) -> Feed:
