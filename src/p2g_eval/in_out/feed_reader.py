@@ -9,6 +9,7 @@ class BaseFeedReader:
     """ Takes a GTFS feed and transforms its data into our datastructures. """
     def __init__(self, feed_path: Path) -> None:
         self.feed_path = feed_path
+        self.feed = None
 
     def _read_file(self, name: str) -> StringIO:
         """ Read the given file and return its content as stream. """
@@ -26,22 +27,28 @@ class BaseFeedReader:
             """ Remove the file extension from the given filename. """
             return filename.rstrip(".txt")
 
+        if self.feed:
+            return self.feed
+
         # Read required files.
         req_names = ["stops.txt", "routes.txt", "stop_times.txt", "trips.txt"]
         data = {remove_ext(name): self._read_file(name) for name in req_names}
 
         # Read conditionally required files.
         cond_req_names = ["calendar.txt", "calendar_dates.txt"]
+        requirements_met = False
         for name in cond_req_names:
             try:
                 contents = self._read_file(name)
                 data[remove_ext(name)] = contents
-            except KeyError:
-                pass
+                requirements_met = True
+            except KeyError:  # File does not exist.
+                data[remove_ext(name)] = StringIO()
 
         # At least one of the conditionally required files is necessary.
-        if any([name in data for name in cond_req_names]):
-            return Feed(data)
+        if requirements_met:
+            self.feed = Feed(data)
+            return self.feed
 
         raise Exception("The given feed contains neither a 'calendar.txt' "
                         "nor a 'calendar_dates.txt'.")
