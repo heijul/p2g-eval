@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from p2g_eval.config.config import C
+from p2g_eval.config.config import P2GConfig
 from p2g_eval.entity_mapper.base_entity_mapper import StopEntityMapper
 from p2g_eval.in_out.feed_reader import BaseFeedReader
 from test import TEST_DATA_DIR
@@ -14,14 +14,24 @@ class TestStopEntityMapper(TestCase):
         feed2_path = TEST_DATA_DIR.joinpath("p2g_vag_1.zip")
         cls.feed2 = BaseFeedReader(feed2_path).read()
 
-    def setUp(self) -> None:
-        self.mapper = StopEntityMapper(self.feed1, self.feed2)
-
     def test_map_naive(self) -> None:
-        mapping = self.mapper.map_naive()
+        mapper = StopEntityMapper(self.feed2, self.feed2)
+        c = P2GConfig()
+        c.stop_mapping = TEST_DATA_DIR.joinpath(
+            "stop_mapping-p2g_vag_1-p2g_vag_1.csv")
+        mapping = mapper.map_naive()
         self.assertTrue(22, len(mapping))
+        manual_map = mapper.map_manual(c.stop_mapping).mapping
+        self.assertEqual(manual_map, mapping.mapping)
 
     def test_map_manual(self) -> None:
-        C.stop_mapping = TEST_DATA_DIR.joinpath("stop_mapping.csv")
-        mapping = self.mapper.map_manual()
+        mapper = StopEntityMapper(self.feed1, self.feed2)
+        c = P2GConfig()
+        c.stop_mapping = TEST_DATA_DIR.joinpath(
+            "stop_mapping-vag-p2g_vag_1.csv")
+        mapping = mapper.map_manual(c.stop_mapping)
         self.assertTrue(22, len(mapping))
+        for i, ((l1, r1), (l2, r2)) in enumerate(zip(c.stop_mapping, mapping)):
+            with self.subTest(i=i):
+                self.assertEqual(l1, l2.stop_id)
+                self.assertEqual(r1, r2.stop_id)

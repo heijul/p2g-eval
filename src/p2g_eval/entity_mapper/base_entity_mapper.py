@@ -37,10 +37,10 @@ class StopEntityMapper(BaseEntityMapper):
                     break
         return mapping
 
-    def map_manual(self) -> EntityMapping:
+    def map_manual(self, stop_mapping: list[tuple[str, str]]) -> EntityMapping:
         """ Basic mapping, where each mapping has been manually defined. """
         mapping = EntityMapping()
-        for true_stop_id, test_stop_id in C.stop_mapping:
+        for true_stop_id, test_stop_id in stop_mapping:
             true_stop = self.true_feed.stops.id_map[true_stop_id]
             test_stop = self.test_feed.stops.id_map[test_stop_id]
             mapping.add_next(true_stop, test_stop)
@@ -48,7 +48,7 @@ class StopEntityMapper(BaseEntityMapper):
 
     def map(self) -> EntityMapping:
         if C.stop_mapping:
-            return self.map_manual()
+            return self.map_manual(C.stop_mapping)
         return self.map_naive()
 
 

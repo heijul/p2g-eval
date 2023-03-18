@@ -31,7 +31,7 @@ class TestP2GConfig(TestCase):
     def test_load_args_dict(self) -> None:
         true_feed = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
         test_feed_path = TEST_DATA_DIR.joinpath("p2g_vag_1.zip")
-        stop_mapping = TEST_DATA_DIR.joinpath("stop_mapping.csv")
+        stop_mapping = TEST_DATA_DIR.joinpath("stop_mapping-vag-p2g_vag_1.csv")
         values = {"test_feed": test_feed_path,
                   "true_feed": true_feed,
                   "stop_mapping": stop_mapping}
