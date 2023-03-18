@@ -31,16 +31,15 @@ class TestP2GConfig(TestCase):
     def test_load_args_dict(self) -> None:
         true_feed = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
         test_feed_path = TEST_DATA_DIR.joinpath("p2g_vag_1.zip")
+        test_feed = BaseFeedReader(test_feed_path).read()
         stop_mapping = TEST_DATA_DIR.joinpath("stop_mapping.csv")
-        values = {"test_feed": test_feed_path,
+        values = {"test_feed": test_feed,
                   "true_feed": true_feed,
                   "stop_mapping": stop_mapping}
         c = P2GConfig()
         c.load_args_dict(values)
-        self.assertEqual(id(true_feed), id(c.true_feed))
-        test_feed = BaseFeedReader(test_feed_path).read()
         self.assertTrue(test_feed == c.test_feed)
-        self.assertNotEqual(id(test_feed), id(c.test_feed))
+        self.assertEqual(id(test_feed), id(c.test_feed))
         with open(stop_mapping) as fil:
             contents = fil.read()
         mapping = [tuple(line.split(",")) for line in contents.split("\n")[1:]
