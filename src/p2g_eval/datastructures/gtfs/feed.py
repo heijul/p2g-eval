@@ -4,6 +4,7 @@ from io import StringIO
 from typing import Any
 
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 from p2g_eval.datastructures.gtfs.calendar import Calendar
 from p2g_eval.datastructures.gtfs.calendar_dates import CalendarDate
@@ -14,8 +15,11 @@ from p2g_eval.datastructures.gtfs.trips import Trip
 
 
 def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
-    # noinspection PyTypeChecker
-    df = pd.read_csv(buffer, dtype="str")
+    try:
+        # noinspection PyTypeChecker
+        df = pd.read_csv(buffer, dtype="str")
+    except EmptyDataError:
+        return pd.DataFrame()
     return df.fillna("")
 
 
@@ -74,6 +78,17 @@ class DFFeed:
         feed.calendar = self.calendar.copy()
         feed.calendar_dates = self.calendar_dates.copy()
         return feed
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, DFFeed):
+            return False
+        fields = ["stops", "stop_times", "routes", "trips",
+                  "calendar", "calendar_dates"]
+        for field in fields:
+            # noinspection PyTypeChecker
+            if not all(getattr(self, field) == getattr(other, field)):
+                return False
+        return True
 
 
 class Feed:

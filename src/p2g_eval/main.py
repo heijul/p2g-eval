@@ -3,7 +3,6 @@ import sys
 from p2g_eval.config.config import C
 from p2g_eval.datastructures.gtfs.feed import Feed
 from p2g_eval.datastructures.measures.stop_measures import StopLocMeasure
-from p2g_eval.entity_mapper.base_entity_mapper import StopEntityMapper
 from p2g_eval.entity_mapper.dataframe_mapper import BaseMapper
 from p2g_eval.in_out.arg_parser import parse_args
 
