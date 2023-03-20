@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from io import StringIO
 from typing import Any
 
@@ -19,8 +21,15 @@ def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
 
 class DFFeed:
     """ Represents a GTFS feed. """
-    def __init__(self, data: dict[str: StringIO]) -> None:
-        self._create(data)
+    def __init__(self, data: dict[str: StringIO] = None) -> None:
+        self.stops = None
+        self.routes = None
+        self.trips = None
+        self.stop_times = None
+        self.calendar = None
+        self.calendar_dates = None
+        if data is not None:
+            self._create(data)
 
     def _create(self, data: dict[str: StringIO]) -> None:
         self.stops = read_from_buffer(data["stops"])
@@ -29,6 +38,42 @@ class DFFeed:
         self.stop_times = read_from_buffer(data["stop_times"])
         self.calendar = read_from_buffer(data["calendar"])
         self.calendar_dates = read_from_buffer(data["calendar_dates"])
+
+    def reduce_using_stops(self, mapped_stop_ids: pd.Series) -> None:
+        """ Removes all entries in the feed, that are not required.
+        TODO: Explaaain.
+        """
+        # Remove all unused stops.
+        self.stops = self.stops.loc[mapped_stop_ids]
+        # Get all stop_times that use these, all these and only these stops.
+        st = self.stop_times.copy()
+        st["valid_stop"] = st.stop_id.isin(self.stops.stop_id)
+        # All stop_times of trips that only contain the valid stops.
+        mask = st.valid_stop.eq(True).groupby(st.trip_id).transform("all")
+        self.stop_times = st[mask]
+        # Only trips described in the stop_times are served.
+        trip_mask = self.trips.trip_id.isin(self.stop_times.trip_id)
+        self.trips = self.trips[trip_mask]
+        # Remove all routes, that are not used.
+        route_mask = self.routes.route_id.isin(self.trips.route_id)
+        self.routes = self.routes[route_mask]
+        # Remove all calendar/calendar_dates with unmatched service_ids.
+        service_ids = self.trips.service_id
+        calendar_mask = self.calendar.service_id.isin(service_ids)
+        self.calendar = self.calendar[calendar_mask]
+        calendar_dates_mask = self.calendar_dates.service_id.isin(service_ids)
+        self.calendar_dates = self.calendar_dates[calendar_dates_mask]
+
+    def copy(self) -> DFFeed:
+        """ Returns a copy of the current DFFeed. """
+        feed = DFFeed()
+        feed.stops = self.stops.copy()
+        feed.routes = self.routes.copy()
+        feed.trips = self.trips.copy()
+        feed.stop_times = self.stop_times.copy()
+        feed.calendar = self.calendar.copy()
+        feed.calendar_dates = self.calendar_dates.copy()
+        return feed
 
 
 class Feed:
