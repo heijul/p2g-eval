@@ -1,4 +1,4 @@
-""" Mapping functions between objects of two different DFFeeds. """
+""" Mapping functions between objects of two different Feeds. """
 import pandas as pd
 
 from p2g_eval.config.config import C
@@ -11,6 +11,7 @@ def create_contains_any_regex(strings: list[str]) -> str:
 
 
 class FeedMapper:
+    """ Allows to map matching objects of the two given feeds. """
     def __init__(self, feed1: Feed, feed2: Feed) -> None:
         self.feed1 = feed1.copy()
         self.feed2 = feed2.copy()

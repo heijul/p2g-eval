@@ -1,3 +1,6 @@
+""" Utility functions used throughout p2g-eval,
+with no rigid attachment to any of the other modules. """
+
 import functools
 
 import pandas as pd

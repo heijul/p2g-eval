@@ -1,3 +1,5 @@
+""" Contains the Config to be used by p2g-eval. """
+
 from pathlib import Path
 from typing import Any
 
@@ -7,8 +9,11 @@ from p2g_eval.config.properties import FeedProperty, MappingProperty
 
 
 class P2GConfig(BaseConfig):
+    """ The config. Provides the ground-truth and test feeds, as well as
+    the different user-provided mappings. """
     @property
     def src_dir(self) -> Path:
+        """ The source directory of p2g-eval, that contains the 'main.py'. """
         return Path(__file__).parents[1].resolve()
 
     @property
@@ -27,6 +32,8 @@ class P2GConfig(BaseConfig):
         super()._initialize_config_properties()
 
     def load_args_dict(self, values: dict[str: Any]) -> None:
+        """ Load the command line arguments provided by the dictionary.
+        Values already set will be overwritten. """
         for key, value in values.items():
             setattr(self, key, value)
 

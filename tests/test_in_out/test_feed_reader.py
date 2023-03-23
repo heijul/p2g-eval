@@ -1,8 +1,10 @@
+""" Test the feed reader. """
+
 from pathlib import Path
 from unittest import TestCase
 
-from p2g_eval.in_out.feed_reader import BaseFeedReader
-from test import TEST_DIR
+from p2g_eval.in_out.feed_reader import BaseFeedReader, MissingReqFileError
+from tests.utils import TEST_DIR
 
 
 class TestFeedReader(TestCase):
@@ -24,7 +26,7 @@ class TestFeedReader(TestCase):
     def test_read_missing_required_file(self) -> None:
         path = TEST_DIR.joinpath("testdata/vag_invalid.zip")
         feed_reader = BaseFeedReader(path)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(MissingReqFileError):
             feed_reader.read()
 
     def test_read_missing_cond_req_file(self) -> None:

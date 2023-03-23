@@ -1,3 +1,5 @@
+""" Test the feed creation and reduction. """
+
 from io import StringIO
 from unittest import TestCase
 
@@ -7,7 +9,7 @@ from p2g_eval.config.config import P2GConfig
 from p2g_eval.feed import read_from_buffer
 from p2g_eval.feed_mapper import FeedMapper
 from p2g_eval.in_out.feed_reader import BaseFeedReader, read_zip_file
-from test import TEST_DATA_DIR
+from tests.utils import TEST_DATA_DIR
 
 
 class TestFeed(TestCase):

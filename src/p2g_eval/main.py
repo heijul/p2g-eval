@@ -1,3 +1,5 @@
+""" Main module code, which runs all possible evaluations. """
+
 import sys
 
 from p2g_eval.config.config import C

@@ -1,3 +1,5 @@
+""" Provides functions to evaluate a feed. """
+
 import numpy as np
 from geopy.distance import distance
 
@@ -10,16 +12,19 @@ def evaluate_stop_distance(lat1, lon1, lat2, lon2) -> float:
 
 
 class Evaluator:
+    """
+    Used to evaluate the feed, mapped to a ground truth by a FeedMapper.
+    """
     def __init__(self, mapper: FeedMapper) -> None:
-        self.m = mapper
+        self.mapper = mapper
         self.measures = {}
 
     def evaluate_stops(self) -> None:
         """ Calculate the distance (min/max/mean/std) between mapped stops. """
-        if not self.m.is_mapped:
-            self.m.map()
-        stops1 = self.m.feed1.stops[["stop_lat", "stop_lon"]]
-        stops2 = self.m.feed2.stops[["stop_lat", "stop_lon"]]
+        if not self.mapper.is_mapped:
+            self.mapper.map()
+        stops1 = self.mapper.feed1.stops[["stop_lat", "stop_lon"]]
+        stops2 = self.mapper.feed2.stops[["stop_lat", "stop_lon"]]
         v_evaluate_stop_distance = np.vectorize(evaluate_stop_distance)
         self.measures["stops_dist"] = {"dist": v_evaluate_stop_distance(
             stops1.stop_lat, stops1.stop_lon,
@@ -30,4 +35,5 @@ class Evaluator:
             "mean": dist.mean(), "std": dist.std()})
 
     def evaluate(self) -> None:
+        """ Runs all defined evaluations. """
         self.evaluate_stops()

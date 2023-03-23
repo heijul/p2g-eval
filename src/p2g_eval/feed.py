@@ -1,3 +1,5 @@
+""" Provides the ability to store the files of a GTFS feed as DataFrames. """
+
 from __future__ import annotations
 
 from io import StringIO
@@ -7,6 +9,7 @@ from pandas.errors import EmptyDataError
 
 
 def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
+    """ Read the .csv file contained in the buffer. """
     try:
         # noinspection PyTypeChecker
         df = pd.read_csv(buffer, dtype="str")
@@ -47,11 +50,12 @@ class Feed:
         # Remove all unused stops.
         self.stops = self.stops.loc[mapped_stop_ids]
         # Get all stop_times that use these, all these and only these stops.
-        st = self.stop_times.copy()
-        st["valid_stop"] = st.stop_id.isin(self.stops.stop_id)
+        stop_times = self.stop_times.copy()
+        stop_times["valid_stop"] = stop_times.stop_id.isin(self.stops.stop_id)
         # All stop_times of complete trips, that contain only the valid stops.
-        mask = st.valid_stop.eq(True).groupby(st.trip_id).transform("all")
-        self.stop_times = st[mask]
+        mask = stop_times.valid_stop.eq(
+            True).groupby(stop_times.trip_id).transform("all")
+        self.stop_times = stop_times[mask]
         # Only trips described in the stop_times are served.
         trip_mask = self.trips.trip_id.isin(self.stop_times.trip_id)
         self.trips = self.trips[trip_mask]
@@ -78,6 +82,7 @@ class Feed:
 
     @property
     def fields(self) -> list[str]:
+        """ The fields (i.e. files without extension) of the feed. """
         return ["stops", "routes", "trips",
                 "stop_times", "calendar", "calendar_dates"]
 
