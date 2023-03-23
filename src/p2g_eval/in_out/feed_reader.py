@@ -5,20 +5,20 @@ from zipfile import ZipFile
 from p2g_eval.datastructures.feed import Feed
 
 
+def read_zip_file(zip_path: str | Path, name: str) -> StringIO:
+    """ Read the given file and return its content as stream. """
+    try:
+        with ZipFile(zip_path).open(name, "r") as file:
+            return StringIO(file.read().decode("utf-8"))
+    except (PermissionError, OSError) as e:
+        raise e
+
+
 class BaseFeedReader:
     """ Takes a GTFS feed and transforms its data into our datastructures. """
     def __init__(self, feed_path: Path) -> None:
         self.feed_path = feed_path
         self.feed = None
-
-    def _read_file(self, name: str) -> StringIO:
-        """ Read the given file and return its content as stream. """
-        try:
-            with ZipFile(self.feed_path).open(name, "r") as file:
-
-                return StringIO(file.read().decode("utf-8"))
-        except (PermissionError, OSError) as e:
-            raise e
 
     def read(self) -> Feed:
         """ Reads the feed and creates the neccessary datastructures. """
@@ -32,14 +32,15 @@ class BaseFeedReader:
 
         # Read required files.
         req_names = ["stops.txt", "routes.txt", "stop_times.txt", "trips.txt"]
-        data = {remove_ext(name): self._read_file(name) for name in req_names}
+        data = {remove_ext(name): read_zip_file(self.feed_path, name)
+                for name in req_names}
 
         # Read conditionally required files.
         cond_req_names = ["calendar.txt", "calendar_dates.txt"]
         requirements_met = False
         for name in cond_req_names:
             try:
-                contents = self._read_file(name)
+                contents = read_zip_file(self.feed_path, name)
                 data[remove_ext(name)] = contents
                 requirements_met = True
             except KeyError:  # File does not exist.
