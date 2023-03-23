@@ -45,14 +45,19 @@ class DFFeed:
 
     def reduce_using_stops(self, mapped_stop_ids: pd.Series) -> None:
         """ Removes all entries in the feed, that are not required.
-        TODO: Explaaain.
+
+        First, the mapped_stop_ids are used to remove all stops, that do not
+        have any of these stop_ids. Then, the stop_times are filtered, such
+        that it contains only trips using these and only these stops. Finally,
+        the trips are used to keep only routes, calendar and calendar_dates
+        entries, that are used in these trips.
         """
         # Remove all unused stops.
         self.stops = self.stops.loc[mapped_stop_ids]
         # Get all stop_times that use these, all these and only these stops.
         st = self.stop_times.copy()
         st["valid_stop"] = st.stop_id.isin(self.stops.stop_id)
-        # All stop_times of trips that only contain the valid stops.
+        # All stop_times of complete trips, that contain only the valid stops.
         mask = st.valid_stop.eq(True).groupby(st.trip_id).transform("all")
         self.stop_times = st[mask]
         # Only trips described in the stop_times are served.
