@@ -2,7 +2,7 @@ from io import StringIO
 from pathlib import Path
 from zipfile import ZipFile
 
-from p2g_eval.datastructures.gtfs.feed import DFFeed
+from p2g_eval.datastructures.feed import Feed
 
 
 class BaseFeedReader:
@@ -20,7 +20,7 @@ class BaseFeedReader:
         except (PermissionError, OSError) as e:
             raise e
 
-    def read(self) -> DFFeed:
+    def read(self) -> Feed:
         """ Reads the feed and creates the neccessary datastructures. """
 
         def remove_ext(filename: str) -> str:
@@ -47,7 +47,7 @@ class BaseFeedReader:
 
         # At least one of the conditionally required files is necessary.
         if requirements_met:
-            self.feed = DFFeed(data)
+            self.feed = Feed(data)
             return self.feed
 
         raise Exception("The given feed contains neither a 'calendar.txt' "

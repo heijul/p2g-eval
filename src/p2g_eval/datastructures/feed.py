@@ -1,17 +1,9 @@
 from __future__ import annotations
 
 from io import StringIO
-from typing import Any
 
 import pandas as pd
 from pandas.errors import EmptyDataError
-
-from p2g_eval.datastructures.gtfs.calendar import Calendar
-from p2g_eval.datastructures.gtfs.calendar_dates import CalendarDate
-from p2g_eval.datastructures.gtfs.routes import Route
-from p2g_eval.datastructures.gtfs.stop import Stop
-from p2g_eval.datastructures.gtfs.stop_times import StopTime
-from p2g_eval.datastructures.gtfs.trips import Trip
 
 
 def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
@@ -23,7 +15,7 @@ def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
     return df.fillna("")
 
 
-class DFFeed:
+class Feed:
     """ Represents a GTFS feed. """
     def __init__(self, data: dict[str: StringIO] = None) -> None:
         self.stops = None
@@ -73,9 +65,9 @@ class DFFeed:
         calendar_dates_mask = self.calendar_dates.service_id.isin(service_ids)
         self.calendar_dates = self.calendar_dates[calendar_dates_mask]
 
-    def copy(self) -> DFFeed:
+    def copy(self) -> Feed:
         """ Returns a copy of the current DFFeed. """
-        feed = DFFeed()
+        feed = Feed()
         feed.stops = self.stops.copy()
         feed.routes = self.routes.copy()
         feed.trips = self.trips.copy()
@@ -84,42 +76,16 @@ class DFFeed:
         feed.calendar_dates = self.calendar_dates.copy()
         return feed
 
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, DFFeed):
-            return False
-        fields = ["stops", "stop_times", "routes", "trips",
-                  "calendar", "calendar_dates"]
-        for field in fields:
-            # noinspection PyTypeChecker
-            if not all(getattr(self, field) == getattr(other, field)):
-                return False
-        return True
-
-
-class Feed:
-    """ Represents a GTFS feed. """
-    def __init__(self, data: dict[str: StringIO]) -> None:
-        self._create(data)
-
-    def _create(self, data: dict[str: StringIO]) -> None:
-        self.stops = Stop.from_buffer(data["stops"])
-        self.routes = Route.from_buffer(data["routes"])
-        self.trips = Trip.from_buffer(data["trips"])
-        self.stop_times = StopTime.from_buffer(data["stop_times"])
-        self.calendar = Calendar.from_buffer(data["calendar"])
-        self.calendar_dates = CalendarDate.from_buffer(data["calendar_dates"])
-
     @property
-    def field_names(self) -> list[str]:
+    def fields(self) -> list[str]:
         return ["stops", "routes", "trips",
                 "stop_times", "calendar", "calendar_dates"]
 
-    def __eq__(self, other: Any) -> bool:
-        """ Two feeds are equal if all their objects are equal. """
+    def __eq__(self, other) -> bool:
         if not isinstance(other, Feed):
             return False
-
-        for field in self.field_names:
-            if getattr(self, field) != getattr(other, field):
+        for field in self.fields:
+            # noinspection PyTypeChecker
+            if not all(getattr(self, field) == getattr(other, field)):
                 return False
         return True
