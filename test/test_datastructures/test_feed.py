@@ -4,8 +4,8 @@ from unittest import TestCase
 import pandas as pd
 
 from p2g_eval.config.config import P2GConfig
-from p2g_eval.datastructures.feed import read_from_buffer
-from p2g_eval.entity_mapper.dataframe_mapper import BaseMapper
+from p2g_eval.feed import read_from_buffer
+from p2g_eval.feed_mapper import FeedMapper
 from p2g_eval.in_out.feed_reader import BaseFeedReader, read_zip_file
 from test import TEST_DATA_DIR
 
@@ -30,7 +30,7 @@ class TestFeed(TestCase):
             "stop_mapping-vag-p2g_vag_1.csv")
         feed1 = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
         feed2 = BaseFeedReader(TEST_DATA_DIR.joinpath("p2g_vag_1.zip")).read()
-        mapper = BaseMapper(feed1, feed2)
+        mapper = FeedMapper(feed1, feed2)
         mapper.map_stops(c.stop_mapping)
         feed1.reduce_using_stops(mapper.mappings["stops"].stop1)
         self.assertEqual(22, len(feed1.stops))

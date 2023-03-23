@@ -2,7 +2,7 @@
 import pandas as pd
 
 from p2g_eval.config.config import C
-from p2g_eval.datastructures.feed import Feed
+from p2g_eval.feed import Feed
 
 
 def create_contains_any_regex(strings: list[str]) -> str:
@@ -10,7 +10,7 @@ def create_contains_any_regex(strings: list[str]) -> str:
     return "|".join([fr"(?:{string})" for string in strings])
 
 
-class BaseMapper:
+class FeedMapper:
     def __init__(self, feed1: Feed, feed2: Feed) -> None:
         self.feed1 = feed1.copy()
         self.feed2 = feed2.copy()

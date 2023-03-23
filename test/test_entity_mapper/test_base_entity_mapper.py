@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from p2g_eval.config.config import P2GConfig
-from p2g_eval.entity_mapper.dataframe_mapper import BaseMapper
+from p2g_eval.feed_mapper import FeedMapper
 from p2g_eval.in_out.feed_reader import BaseFeedReader
 from test import TEST_DATA_DIR
 
@@ -15,7 +15,7 @@ class TestBaseMapper(TestCase):
         cls.feed2 = BaseFeedReader(feed2_path).read()
 
     def test_map_stops(self) -> None:
-        mapper = BaseMapper(self.feed1, self.feed2)
+        mapper = FeedMapper(self.feed1, self.feed2)
         c = P2GConfig()
         c.stop_mapping = TEST_DATA_DIR.joinpath(
             "stop_mapping-vag-p2g_vag_1.csv")
@@ -33,7 +33,7 @@ class TestBaseMapper(TestCase):
         # Test that the order of stops in the df does not change mapping.
         feed = self.feed1.copy()
         feed.stops = feed.stops.sort_values("stop_name")
-        mapper = BaseMapper(feed, self.feed2)
+        mapper = FeedMapper(feed, self.feed2)
         c = P2GConfig()
         c.stop_mapping = TEST_DATA_DIR.joinpath(
             "stop_mapping-vag-p2g_vag_1.csv")

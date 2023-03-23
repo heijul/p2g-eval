@@ -2,7 +2,7 @@ from io import StringIO
 from pathlib import Path
 from zipfile import ZipFile
 
-from p2g_eval.datastructures.feed import Feed
+from p2g_eval.feed import Feed
 
 
 def read_zip_file(zip_path: str | Path, name: str) -> StringIO:
