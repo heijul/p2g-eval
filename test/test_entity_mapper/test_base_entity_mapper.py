@@ -30,7 +30,7 @@ class TestBaseMapper(TestCase):
                 self.assertEqual(r1, r2.stop_id)
 
     def test_map_stops_sorted(self) -> None:
-        # Test that order in dataframe does not change mapping.
+        # Test that the order of stops in the df does not change mapping.
         feed = self.feed1.copy()
         feed.stops = feed.stops.sort_values("stop_name")
         mapper = BaseMapper(feed, self.feed2)

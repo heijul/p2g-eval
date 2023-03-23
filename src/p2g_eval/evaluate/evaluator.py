@@ -11,11 +11,11 @@ class Evaluator:
         """ Calculate the distance (min/max/mean/std) between mapped stops. """
         if not self.m.is_mapped:
             self.m.map()
-        # TODO: Assert same length
-        stop_lat1, stop_lon1 = self.m.feed1.stops[["stop_lat", "stop_lat"]]
-        stop_lat2, stop_lon2 = self.m.feed1.stops[["stop_lat", "stop_lat"]]
+        stops1 = self.m.feed1.stops[["stop_lat", "stop_lon"]]
+        stops2 = self.m.feed2.stops[["stop_lat", "stop_lon"]]
         self.measures["stops_dist"] = {"dist": v_evaluate_stop_distance(
-            stop_lat1, stop_lon1, stop_lat2, stop_lon2)}
+            stops1.stop_lat, stops1.stop_lon,
+            stops2.stop_lat, stops2.stop_lon)}
         dist = self.measures["stops_dist"]["dist"]
         self.measures["stops_dist"].update({
             "min": dist.min(), "max": dist.max(),
