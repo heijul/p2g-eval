@@ -22,10 +22,27 @@ class TestBaseMapper(TestCase):
         mapper.map_stops(c.stop_mapping)
         mapping = mapper.mappings["stops"]
         self.assertTrue(22, len(mapping))
-        # TODO: Test order
         for i, (l1, r1) in enumerate(c.stop_mapping):
-            l2 = mapper.feed1.stops.iloc[mapping.loc[i].stop1]
-            r2 = mapper.feed2.stops.iloc[mapping.loc[i].stop2]
+            l2 = mapper.feed1.stops.loc[mapping.iloc[i].stop1]
+            r2 = mapper.feed2.stops.loc[mapping.iloc[i].stop2]
+            with self.subTest(i=i):
+                self.assertEqual(l1, l2.stop_id)
+                self.assertEqual(r1, r2.stop_id)
+
+    def test_map_stops_sorted(self) -> None:
+        # Test that order in dataframe does not change mapping.
+        feed = self.feed1.copy()
+        feed.stops = feed.stops.sort_values("stop_name")
+        mapper = BaseMapper(feed, self.feed2)
+        c = P2GConfig()
+        c.stop_mapping = TEST_DATA_DIR.joinpath(
+            "stop_mapping-vag-p2g_vag_1.csv")
+        mapper.map_stops(c.stop_mapping)
+        mapping = mapper.mappings["stops"]
+        self.assertTrue(22, len(mapping))
+        for i, (l1, r1) in enumerate(c.stop_mapping):
+            l2 = mapper.feed1.stops.loc[mapping.iloc[i].stop1]
+            r2 = mapper.feed2.stops.loc[mapping.iloc[i].stop2]
             with self.subTest(i=i):
                 self.assertEqual(l1, l2.stop_id)
                 self.assertEqual(r1, r2.stop_id)
