@@ -5,7 +5,7 @@ import pandas as pd
 from custom_conf.properties.nested_property import NestedTypeProperty
 from custom_conf.properties.property import Property
 
-from p2g_eval.datastructures.gtfs.feed import Feed
+from p2g_eval.feed import Feed
 from p2g_eval.in_out.feed_reader import BaseFeedReader
 
 
