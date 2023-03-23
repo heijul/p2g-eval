@@ -22,21 +22,18 @@ class TestFeed(TestCase):
         stops_buffer.seek(0)
         df = read_from_buffer(stops_buffer)
         self.assertEqual(22, len(df))
-        # TODO: Improve this test
 
     def test_reduce_using_stops(self) -> None:
-        c = P2GConfig()
-        c.stop_mapping = TEST_DATA_DIR.joinpath(
+        config = P2GConfig()
+        config.stop_mapping = TEST_DATA_DIR.joinpath(
             "stop_mapping-vag-p2g_vag_1.csv")
         feed1 = BaseFeedReader(TEST_DATA_DIR.joinpath("vag.zip")).read()
         feed2 = BaseFeedReader(TEST_DATA_DIR.joinpath("p2g_vag_1.zip")).read()
         mapper = FeedMapper(feed1, feed2)
-        mapper.map_stops(c.stop_mapping)
+        mapper.map_stops(config.stop_mapping)
         feed1.reduce_using_stops(mapper.mappings["stops"].stop1)
         self.assertEqual(22, len(feed1.stops))
         self.assertEqual(1, len(feed1.routes))
-        # TODO: Completeness of routes, etc. using feed1.copy() beforehand.
         # All stops need to exist.
         with self.assertRaises(KeyError):
             feed1.reduce_using_stops(pd.Series(["this_id_does_not_exist"]))
-        # TODO: Test this with more/different feeds + gtfs_files.
