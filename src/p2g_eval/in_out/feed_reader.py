@@ -52,7 +52,7 @@ class BaseFeedReader:
 
         # At least one of the conditionally required files is necessary.
         if requirements_met:
-            self.feed = Feed(data)
+            self.feed = Feed(self.feed_path, data)
             return self.feed
 
         raise MissingCReqFileError(zip_path=self.feed_path,

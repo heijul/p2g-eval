@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from io import StringIO
+from pathlib import Path
 
 import pandas as pd
 from pandas.errors import EmptyDataError
@@ -20,7 +21,8 @@ def read_from_buffer(buffer: StringIO) -> pd.DataFrame:
 
 class Feed:
     """ Represents a GTFS feed. """
-    def __init__(self, data: dict[str: StringIO] = None) -> None:
+    def __init__(self, path: Path, data: dict[str: StringIO] = None) -> None:
+        self.path = path
         self.stops = None
         self.routes = None
         self.trips = None
@@ -71,7 +73,7 @@ class Feed:
 
     def copy(self) -> Feed:
         """ Returns a copy of the current DFFeed. """
-        feed = Feed()
+        feed = Feed(self.path)
         feed.stops = self.stops.copy()
         feed.routes = self.routes.copy()
         feed.trips = self.trips.copy()

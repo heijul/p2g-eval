@@ -1,14 +1,7 @@
 """ Provides functions to evaluate a feed. """
 
-import numpy as np
-from geopy.distance import distance
-
 from p2g_eval.feed_mapper import FeedMapper
-
-
-def evaluate_stop_distance(lat1, lon1, lat2, lon2) -> float:
-    """ Return the distance between the given locations in meter. """
-    return distance((lat1, lon1), (lat2, lon2)).m
+from p2g_eval.measures import StopMeasure
 
 
 class Evaluator:
@@ -17,23 +10,30 @@ class Evaluator:
     """
     def __init__(self, mapper: FeedMapper) -> None:
         self.mapper = mapper
-        self.measures = {}
+        self._initialize_measures()
+
+    def _initialize_measures(self) -> None:
+        self.measures = {"stops": StopMeasure(self.mapper)}
 
     def evaluate_stops(self) -> None:
         """ Calculate the distance (min/max/mean/std) between mapped stops. """
         if not self.mapper.is_mapped:
             self.mapper.map()
-        stops1 = self.mapper.feed1.stops[["stop_lat", "stop_lon"]]
-        stops2 = self.mapper.feed2.stops[["stop_lat", "stop_lon"]]
-        v_evaluate_stop_distance = np.vectorize(evaluate_stop_distance)
-        self.measures["stops_dist"] = {"dist": v_evaluate_stop_distance(
-            stops1.stop_lat, stops1.stop_lon,
-            stops2.stop_lat, stops2.stop_lon)}
-        dist = self.measures["stops_dist"]["dist"]
-        self.measures["stops_dist"].update({
-            "min": dist.min(), "max": dist.max(),
-            "mean": dist.mean(), "std": dist.std()})
+        self.measures["stops"].calculate()
 
     def evaluate(self) -> None:
         """ Runs all defined evaluations. """
         self.evaluate_stops()
+
+    def to_output(self) -> str:
+        """ Output the evaluation results in a human-readable manner. """
+        # Basic message about which feed was evaluated by which ground truth.
+        lines = ["", "Evaluation complete.", "",
+                 "Used ground truth",
+                 f"\t{self.mapper.feed1.path.resolve()}",
+                 "to evaluate the feed",
+                 f"\t{self.mapper.feed2.path.resolve()}",
+                 ""]
+        for measure in self.measures.values():
+            lines += [measure.to_output()]
+        return "\n".join(lines)

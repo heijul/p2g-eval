@@ -13,10 +13,10 @@ def create_contains_any_regex(strings: list[str]) -> str:
 class FeedMapper:
     """ Allows to map matching objects of the two given feeds. """
     def __init__(self, feed1: Feed, feed2: Feed) -> None:
-        self.feed1 = feed1.copy()
-        self.feed2 = feed2.copy()
+        self.feed1: Feed = feed1.copy()
+        self.feed2: Feed = feed2.copy()
         self.mappings: dict[str: pd.DataFrame] = {}
-        self.is_mapped = False
+        self.is_mapped: bool = False
 
     def map_stops(self, stop_mapping) -> None:
         """ Return a mapping using the respective indices of both feeds. """

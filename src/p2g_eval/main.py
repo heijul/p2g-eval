@@ -15,6 +15,7 @@ def main() -> None:
     mapper.map()
     evaluator = Evaluator(mapper)
     evaluator.evaluate()
+    print(evaluator.to_output())
 
 
 if __name__ == "__main__":
