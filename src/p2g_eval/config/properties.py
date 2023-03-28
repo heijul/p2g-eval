@@ -49,7 +49,7 @@ class MappingProperty(NestedTypeProperty):
             value_str = Path(value_str)
         if not value_str.exists():
             raise MissingMapfileError(
-                name=MappingProperty.__class__.__name__, value=value_str)
+                name=MappingProperty.__name__, value=value_str)
         values = pd.read_csv(value_str).values
         return [(str(val[0]), str(val[1])) for val in values]
 
