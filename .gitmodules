@@ -1,6 +1,7 @@
 [submodule "pdf2gtfs"]
 	path = pdf2gtfs
 	url = https://github.com/heijul/pdf2gtfs
+	branch = final_0
 [submodule "custom_conf"]
 	path = custom_conf
 	url = https://github.com/heijul/custom_conf
