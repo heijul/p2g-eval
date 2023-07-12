@@ -61,8 +61,11 @@ class StopMeasure:
             lines += [f"\t{key: <5}: {value:{max_meta_size}.2f}"]
         return lines
 
-    def to_output(self) -> str:
+    def to_output(self, values_only: bool) -> str:
         """ Return a human-readable string about the results. """
+        if values_only:
+            return "\n".join(map(str, self.results))
+
         lines = [f"Result for the {self.name} measure"]
         stops1 = self.mapper.feed1.stops
         stops2 = self.mapper.feed2.stops

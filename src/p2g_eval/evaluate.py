@@ -25,8 +25,12 @@ class Evaluator:
         """ Runs all defined evaluations. """
         self.evaluate_stops()
 
-    def to_output(self) -> str:
+    def to_output(self, values_only: bool) -> str:
         """ Output the evaluation results in a human-readable manner. """
+        if values_only:
+            lines = [m.to_output(values_only) for m in self.measures.values()]
+            return "\n".join(lines)
+
         # Basic message about which feed was evaluated by which ground truth.
         lines = ["", "Evaluation complete.", "",
                  "Used ground truth",
@@ -35,5 +39,5 @@ class Evaluator:
                  f"\t{self.mapper.feed2.path.resolve()}",
                  ""]
         for measure in self.measures.values():
-            lines += [measure.to_output()]
+            lines += [measure.to_output(False)]
         return "\n".join(lines)

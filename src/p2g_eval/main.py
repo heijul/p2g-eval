@@ -8,15 +8,15 @@ from p2g_eval.evaluate import Evaluator
 from p2g_eval.in_out.arg_parser import parse_args
 
 
-def main() -> None:
+def main(values_only: bool) -> str:
     """ Evaluates a given GTFS feed based on another given GTFS-feed. """
     C.load_args_dict(parse_args(sys.argv))
     mapper = FeedMapper(C.true_feed, C.test_feed)
     mapper.map()
     evaluator = Evaluator(mapper)
     evaluator.evaluate()
-    print(evaluator.to_output())
+    return evaluator.to_output(values_only)
 
 
 if __name__ == "__main__":
-    main()
+    print(main(False))
